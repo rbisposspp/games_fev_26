@@ -1,0 +1,1207 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ESL Stations — RBS ESL Tech Teach</title>
+  <style>
+    :root{
+      --lb:#bfe6ff;   /* light blue */
+      --mp:#ff8fc7;   /* medium pink */
+      --dp:#2b0b3f;   /* dark purple */
+      --ink:#121212;
+      --card:#ffffff;
+      --muted:#5c5c5c;
+      --ok:#1f9d55;
+      --warn:#b45309;
+      --bad:#b91c1c;
+      --shadow: 0 10px 30px rgba(0,0,0,.12);
+      --r:18px;
+      --pad:16px;
+      --font: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:var(--font);
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 600px at 10% 0%, rgba(191,230,255,.65), transparent 60%),
+        radial-gradient(1200px 600px at 90% 20%, rgba(255,143,199,.35), transparent 60%),
+        radial-gradient(1200px 600px at 60% 100%, rgba(43,11,63,.18), transparent 60%),
+        #f7f7fb;
+      min-height:100vh;
+      padding:20px;
+    }
+    header{
+      max-width:1100px;
+      margin:0 auto 16px;
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      justify-content:space-between;
+    }
+    .brand{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .brand h1{
+      margin:0;
+      font-size:20px;
+      font-weight:800;
+      letter-spacing:.2px;
+      color:var(--dp);
+    }
+    .brand .sub{
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.25;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      background:rgba(255,255,255,.75);
+      border:1px solid rgba(0,0,0,.08);
+      border-radius:999px;
+      box-shadow:0 6px 18px rgba(0,0,0,.06);
+      backdrop-filter: blur(8px);
+    }
+    .pill strong{color:var(--dp)}
+    main{
+      max-width:1100px;
+      margin:0 auto;
+      display:grid;
+      grid-template-columns: 360px 1fr;
+      gap:16px;
+    }
+    @media (max-width: 980px){
+      main{grid-template-columns: 1fr;}
+    }
+    .panel{
+      background:rgba(255,255,255,.85);
+      border:1px solid rgba(0,0,0,.08);
+      border-radius:var(--r);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+    .panel .hd{
+      padding:14px 16px;
+      border-bottom:1px solid rgba(0,0,0,.08);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      background:
+        linear-gradient(90deg, rgba(191,230,255,.55), rgba(255,143,199,.20));
+    }
+    .panel .hd h2{
+      margin:0;
+      font-size:14px;
+      color:var(--dp);
+      font-weight:900;
+      letter-spacing:.3px;
+      text-transform:uppercase;
+    }
+    .panel .bd{padding:16px}
+    .row{display:flex; gap:10px; align-items:center; flex-wrap:wrap}
+    .stack{display:flex; flex-direction:column; gap:10px}
+    button, select, input[type="number"], input[type="text"], textarea{
+      font-family:inherit;
+      font-size:14px;
+    }
+    button{
+      border:0;
+      border-radius:12px;
+      padding:10px 12px;
+      cursor:pointer;
+      background:var(--dp);
+      color:white;
+      font-weight:700;
+      box-shadow:0 10px 18px rgba(43,11,63,.18);
+      transition: transform .06s ease, opacity .2s ease;
+    }
+    button:active{transform: translateY(1px)}
+    button.secondary{
+      background:white;
+      color:var(--dp);
+      border:1px solid rgba(0,0,0,.12);
+      box-shadow:none;
+      font-weight:800;
+    }
+    button.ghost{
+      background:transparent;
+      border:1px dashed rgba(43,11,63,.35);
+      color:var(--dp);
+      box-shadow:none;
+      font-weight:800;
+    }
+    button:disabled{
+      opacity:.5;
+      cursor:not-allowed;
+    }
+    .tabs{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .tab{
+      border-radius:999px;
+      padding:10px 12px;
+      border:1px solid rgba(0,0,0,.12);
+      background:white;
+      color:var(--dp);
+      font-weight:900;
+      cursor:pointer;
+      user-select:none;
+    }
+    .tab.active{
+      background:linear-gradient(90deg, rgba(191,230,255,.85), rgba(255,143,199,.55));
+      border-color: rgba(43,11,63,.2);
+    }
+    .kpi{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:10px;
+    }
+    .kpi .box{
+      background:white;
+      border:1px solid rgba(0,0,0,.08);
+      border-radius:14px;
+      padding:10px;
+    }
+    .kpi .box .t{font-size:12px;color:var(--muted)}
+    .kpi .box .v{font-size:18px;font-weight:900;color:var(--dp)}
+    .card{
+      background:white;
+      border:1px solid rgba(0,0,0,.10);
+      border-radius:16px;
+      padding:16px;
+      box-shadow:0 8px 20px rgba(0,0,0,.06);
+    }
+    .muted{color:var(--muted); font-size:13px; line-height:1.35}
+    .big{
+      font-size:20px;
+      font-weight:900;
+      color:var(--dp);
+      margin:0 0 6px;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:800;
+      background:rgba(191,230,255,.55);
+      border:1px solid rgba(43,11,63,.12);
+      color:var(--dp);
+    }
+    .choices{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap:10px;
+      margin-top:12px;
+    }
+    @media (max-width: 700px){
+      .choices{grid-template-columns: 1fr;}
+    }
+    .choice{
+      border:1px solid rgba(0,0,0,.12);
+      border-radius:14px;
+      padding:12px;
+      background:rgba(255,255,255,.9);
+      cursor:pointer;
+      transition: transform .06s ease, border-color .2s ease;
+      position:relative;
+      overflow:hidden;
+    }
+    .choice:hover{transform: translateY(-1px)}
+    .choice .label{font-weight:900;color:var(--dp)}
+    .choice .hint{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.25}
+    .choice.correct{border-color: rgba(31,157,85,.6); outline:2px solid rgba(31,157,85,.25)}
+    .choice.wrong{border-color: rgba(185,28,28,.6); outline:2px solid rgba(185,28,28,.2)}
+    .meter{
+      height:10px;
+      background:rgba(0,0,0,.08);
+      border-radius:999px;
+      overflow:hidden;
+    }
+    .meter > div{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, var(--lb), var(--mp), rgba(43,11,63,.65));
+      transition: width .25s ease;
+    }
+    textarea{
+      width:100%;
+      min-height:86px;
+      border-radius:14px;
+      border:1px solid rgba(0,0,0,.12);
+      padding:12px;
+      resize:vertical;
+      background:white;
+    }
+    .footer-note{
+      text-align:center;
+      margin-top:14px;
+      color:rgba(43,11,63,.55);
+      font-size:12px;
+      letter-spacing:.2px;
+    }
+    /* Subtle hidden text “RBS ESL Tech Teach” in background element */
+    .watermark{
+      position:fixed;
+      right:14px;
+      bottom:10px;
+      font-size:10px;
+      color:rgba(43,11,63,.25);
+      user-select:none;
+      transform: rotate(-2deg);
+    }
+    .mini{
+      font-size:12px;
+      font-weight:800;
+      color:rgba(43,11,63,.55);
+    }
+    .sep{height:1px;background:rgba(0,0,0,.08);margin:12px 0}
+    .toast{
+      position:fixed;
+      top:16px;
+      left:50%;
+      transform: translateX(-50%);
+      background:rgba(255,255,255,.95);
+      border:1px solid rgba(0,0,0,.12);
+      border-radius:999px;
+      padding:10px 12px;
+      box-shadow: var(--shadow);
+      display:none;
+      z-index:10;
+      font-weight:800;
+      color:var(--dp);
+    }
+  </style>
+</head>
+<body>
+  <div class="toast" id="toast"></div>
+
+  <header>
+    <div class="brand">
+      <h1>ESL Stations — Station Rotation</h1>
+      <div class="sub">
+        4 stations: <strong>Listen</strong> → <strong>Guess</strong> → <strong>Visual</strong> → <strong>CCQ</strong>. <br/>
+        Works offline. Uses browser TTS (Web Speech). No fuss.
+      </div>
+    </div>
+    <div class="pill">
+      <strong>Student mode</strong>
+      <span class="mini" id="sessionInfo">local session</span>
+    </div>
+  </header>
+
+  <main>
+    <!-- LEFT: Controls / Timer / List -->
+    <section class="panel">
+      <div class="hd">
+        <h2>Controls</h2>
+        <button class="secondary" id="resetBtn" title="Reset progress">Reset</button>
+      </div>
+      <div class="bd stack">
+        <div class="card">
+          <div class="row" style="justify-content:space-between">
+            <div>
+              <div class="badge" id="stationBadge">Station 1 — Listen</div>
+              <div class="muted" style="margin-top:8px">Tip: use the timer and rotate on your own. In groups, each student controls their own phone.</div>
+            </div>
+          </div>
+          <div class="sep"></div>
+
+          <div class="row">
+            <label class="mini">Timer per station (min)</label>
+            <input type="number" id="minutes" value="7" min="1" max="20" style="width:90px;padding:10px 12px;border-radius:12px;border:1px solid rgba(0,0,0,.12);background:white">
+            <button class="secondary" id="startTimerBtn">Start</button>
+            <button class="secondary" id="pauseTimerBtn">Pause</button>
+            <button class="secondary" id="nextStationBtn">Next station</button>
+          </div>
+
+          <div style="margin-top:10px">
+            <div class="row" style="justify-content:space-between">
+              <div class="mini">Time</div>
+              <div class="mini" id="timeLeft">07:00</div>
+            </div>
+            <div class="meter" title="Time progress"><div id="timeBar"></div></div>
+          </div>
+
+          <div class="sep"></div>
+
+          <div class="row">
+            <label class="mini">Voice (TTS)</label>
+            <select id="voiceSelect" style="flex:1; min-width:220px; padding:10px 12px; border-radius:12px; border:1px solid rgba(0,0,0,.12); background:white"></select>
+            <button class="ghost" id="testVoiceBtn">Test</button>
+          </div>
+
+          <div class="row" style="margin-top:10px">
+            <label class="mini">Speed</label>
+            <input type="number" id="rate" value="1" min="0.7" max="1.4" step="0.1" style="width:90px;padding:10px 12px;border-radius:12px;border:1px solid rgba(0,0,0,.12);background:white">
+            <label class="mini">Language</label>
+            <select id="lang" style="padding:10px 12px;border-radius:12px;border:1px solid rgba(0,0,0,.12);background:white">
+              <option value="en-US">en-US</option>
+              <option value="en-GB">en-GB</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="big" style="margin:0">Item list</div>
+          <div class="muted">Click to select the current item.</div>
+          <div class="sep"></div>
+          <div class="kpi">
+            <div class="box">
+              <div class="t">Total</div>
+              <div class="v" id="kTotal">30</div>
+            </div>
+            <div class="box">
+              <div class="t">Correct</div>
+              <div class="v" id="kCorrect">0</div>
+            </div>
+            <div class="box">
+              <div class="t">Progress</div>
+              <div class="v" id="kProgress">0%</div>
+            </div>
+          </div>
+          <div class="sep"></div>
+          <div id="itemList" class="stack" style="max-height:380px; overflow:auto; padding-right:4px"></div>
+        </div>
+
+        <div class="card">
+          <div class="big">Import your content (optional)</div>
+          <div class="muted">
+            Paste JSON in the app format to replace the list. (Useful for pasting spreadsheet data.)
+          </div>
+          <div class="sep"></div>
+          <textarea id="importBox" placeholder='Paste a JSON array here, e.g.:
+[
+ {"word":"a bag","def":"...","guess":"...","ccq":"...","imagePrompt":"..."},
+ ...
+]'></textarea>
+          <div class="row" style="margin-top:10px">
+            <button class="secondary" id="importBtn">Import</button>
+            <button class="ghost" id="exportBtn">Export JSON</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT: Stations -->
+    <section class="panel">
+      <div class="hd">
+        <h2>Stations</h2>
+        <div class="tabs" id="tabs"></div>
+      </div>
+      <div class="bd">
+        <div class="card" id="stationCard">
+          <!-- dynamic -->
+        </div>
+        <div class="footer-note">Survival tip: if you get stuck, go back one station. Learning is a loop, not a show.</div>
+      </div>
+    </section>
+  </main>
+
+  <div class="watermark">RBS ESL Tech Teach</div>
+
+<script>
+(function(){
+  // -----------------------
+  // Default dataset (30 words with prompts)
+  // -----------------------
+  const defaultItems = [
+    {word:"a bag",
+      imagePrompt:"Everyday social scene, person arriving at a cafe and placing a shoulder bag on a chair, friendly atmosphere, modern casual style, light blue medium pink dark purple color palette, subtle hidden text “RBS ESL Tech Teach” printed small on a tag of the bag",
+      def:"A personal item used to carry everyday things like books, money, and devices when you go out.",
+      guess:"I go with you to school, work, or trips. I carry your things but I’m not a pocket. What am I?",
+      ccq:"Do you use this to carry your belongings outside your house?"
+    },
+    {word:"a charger",
+      imagePrompt:"Person at home plugging a phone into a wall charger near a table, cozy evening scene, light blue medium pink dark purple palette, subtle hidden text “RBS ESL Tech Teach” on the plug label",
+      def:"A device used to give electrical power to a battery so it can work again.",
+      guess:"When your phone is almost dead, you look for me. I bring energy back. What am I?",
+      ccq:"Do you use this to give power to your electronic device?"
+    },
+    {word:"a coin",
+      imagePrompt:"Close social moment paying with coins at a small shop counter, friendly cashier, light blue medium pink dark purple palette, subtle hidden text “RBS ESL Tech Teach” engraved tiny on coin edge",
+      def:"A small round piece of metal used as money.",
+      guess:"I’m small, round, and made of metal. People use me to buy cheap things. What am I?",
+      ccq:"Is this a paper form of money?"
+    },
+    {word:"a credit card",
+      imagePrompt:"Customer paying at a store using a card at a payment machine, social interaction, light blue medium pink dark purple palette, subtle hidden text “RBS ESL Tech Teach” microprinted on card corner",
+      def:"A plastic payment tool that lets you buy now and pay the bank later.",
+      guess:"I’m not cash, but I help you buy things. The bank sends the bill later. What am I?",
+      ccq:"Do you need a bank account to use this?"
+    },
+    {word:"a diary",
+      imagePrompt:"Teen writing personal thoughts at a desk at night, private cozy scene, light blue medium pink dark purple palette, subtle hidden text “RBS ESL Tech Teach” on cover pattern",
+      def:"A private book where someone writes daily thoughts and experiences.",
+      guess:"People write their secrets and daily stories in me. I’m usually private. What am I?",
+      ccq:"Do people usually share what they write in this with everyone?"
+    },
+    {word:"a dictionary",
+      imagePrompt:"Student checking word meanings in a dictionary at a study table, light blue medium pink dark purple palette, subtle hidden text “RBS ESL Tech Teach” on a page footer",
+      def:"A reference book that explains the meanings of words.",
+      guess:"When you don’t know a word’s meaning, you open me. What am I?",
+      ccq:"Do you use this to learn vocabulary meanings?"
+    },
+    {word:"a file",
+      imagePrompt:"Office worker organizing documents into a paper file folder, workplace scene, light blue medium pink dark purple palette, subtle hidden text “RBS ESL Tech Teach” on folder tab",
+      def:"A container used to organize and store documents and papers.",
+      guess:"I help keep papers organized and together in an office. What am I?",
+      ccq:"Is this used to store loose papers in order?"
+    },
+    {word:"glasses",
+      imagePrompt:"Person putting on reading glasses while talking with a friend at a table, light blue medium pink dark purple palette, subtle hidden text “RBS ESL Tech Teach” on glasses case",
+      def:"An object worn on the face to help people see more clearly.",
+      guess:"People wear me on their face to see better. I have two lenses. What am I?",
+      ccq:"Do people wear this on their hands?"
+    },
+    {word:"headphones",
+      imagePrompt:"Young adult listening to music with headphones in a park with a friend nearby, light blue medium pink dark purple palette, subtle hidden text “RBS ESL Tech Teach” on earcup ring",
+      def:"Audio equipment worn over or in the ears to listen to sound privately.",
+      guess:"I go on your ears and play music just for you. What am I?",
+      ccq:"Do you use this to listen without speakers?"
+    },
+    {word:"an identity card",
+      imagePrompt:"Person showing an identity card at a reception desk, polite social interaction, light blue medium pink dark purple palette, subtle hidden text “RBS ESL Tech Teach” microtext on card stripe",
+      def:"An official document that proves who a person is.",
+      guess:"I show your name and photo so people know who you are. What am I?",
+      ccq:"Is this used to prove your identity?"
+    },
+    {word:"a key",
+      imagePrompt:"Everyday scene, person unlocking a house door while greeting someone, light blue medium pink dark purple palette, subtle hidden text “RBS ESL Tech Teach” engraved tiny on the metal surface",
+      def:"A small metal object used to open or lock doors and other secured things.",
+      guess:"I’m small and made of metal. I open doors but I’m not a handle. What am I?",
+      ccq:"Do you use this to open a locked door?"
+    },
+    {word:"a lamp",
+      imagePrompt:"Cozy evening study scene with a desk lamp turned on while two people talk, light blue medium pink dark purple palette, subtle hidden text “RBS ESL Tech Teach” on the lamp base label",
+      def:"An object that produces light inside a room.",
+      guess:"I help you see at night inside your room. I sit on a table or hang from above. What am I?",
+      ccq:"Does this make light or sound?"
+    },
+    {word:"a laptop",
+      imagePrompt:"Student and teacher sitting together using a laptop at a table, light blue medium pink dark purple palette, subtle hidden text “RBS ESL Tech Teach” as tiny sticker near keyboard",
+      def:"A portable computer that you can carry and use in different places.",
+      guess:"I’m a computer you can carry in your bag and open like a book. What am I?",
+      ccq:"Is this a portable computer?"
+    },
+    {word:"a magazine",
+      imagePrompt:"Person reading a magazine in a waiting room with others nearby, light blue medium pink dark purple palette, subtle hidden text “RBS ESL Tech Teach” hidden in a cover barcode",
+      def:"A printed publication with articles and pictures, usually released regularly.",
+      guess:"I have photos and articles and come out every week or month. What am I?",
+      ccq:"Does this usually have many pictures and short articles?"
+    },
+    {word:"a newspaper",
+      imagePrompt:"Man and woman discussing news while holding a newspaper at a cafe table, light blue medium pink dark purple palette, subtle hidden text “RBS ESL Tech Teach” microprinted in page footer",
+      def:"A daily or weekly printed paper with news and reports.",
+      guess:"People read me to learn what happened in the world today. What am I?",
+      ccq:"Is this focused on daily news?"
+    },
+    {word:"a notebook",
+      imagePrompt:"Student taking notes while talking with a classmate, classroom social scene, light blue medium pink dark purple palette, subtle hidden text “RBS ESL Tech Teach” on notebook corner",
+      def:"A small book with blank or lined pages for writing notes.",
+      guess:"People write class notes and ideas in me. I’m made of many empty pages. What am I?",
+      ccq:"Do you write your notes in this?"
+    },
+    {word:"a pen",
+      imagePrompt:"Two coworkers signing a document and sharing a pen, friendly office interaction, light blue medium pink dark purple palette, subtle hidden text “RBS ESL Tech Teach” printed tiny on the barrel",
+      def:"A writing tool that uses ink.",
+      guess:"I write with ink, not graphite. What am I?",
+      ccq:"Do you erase this easily with a normal eraser?"
+    },
+    {word:"a pencil",
+      imagePrompt:"Child lending a pencil to a friend during class, friendly learning moment, light blue medium pink dark purple palette, subtle hidden text “RBS ESL Tech Teach” on pencil side",
+      def:"A writing tool that uses graphite and can be erased.",
+      guess:"I write in gray and you can erase my marks. What am I?",
+      ccq:"Can you erase what this writes?"
+    },
+    {word:"a (mobile) phone",
+      imagePrompt:"Two friends taking a selfie with a mobile phone outdoors, social fun scene, light blue medium pink dark purple palette, subtle hidden text “RBS ESL Tech Teach” faint on phone case",
+      def:"A portable electronic device used to call, message, and access the internet.",
+      guess:"People carry me everywhere to call and send messages. What am I?",
+      ccq:"Can you make calls with this device?"
+    },
+    {word:"a photo",
+      imagePrompt:"Family looking at a printed photo together and smiling, warm social moment, light blue medium pink dark purple palette, subtle hidden text “RBS ESL Tech Teach” microprinted on photo border",
+      def:"A captured image that shows a moment from real life.",
+      guess:"I freeze a moment so you can see it again later. What am I?",
+      ccq:"Does this show a captured moment visually?"
+    },
+    {word:"a piece of paper",
+      imagePrompt:"Student giving a piece of paper with notes to a classmate, classroom interaction, light blue medium pink dark purple palette, subtle hidden text “RBS ESL Tech Teach” tiny in page corner texture",
+      def:"A single sheet used for writing or printing.",
+      guess:"I’m thin, flat, and people write or print on me. What am I?",
+      ccq:"Is this just one sheet, not a whole book?"
+    },
+    {word:"a purse",
+      imagePrompt:"Person paying at a store and opening a small purse, social shopping moment, light blue medium pink dark purple palette, subtle hidden text “RBS ESL Tech Teach” on zipper tag",
+      def:"A small personal holder used to carry money and small valuables.",
+      guess:"I’m small, I carry money, and I often go inside a bigger bag. What am I?",
+      ccq:"Is this usually smaller than a backpack?"
+    },
+    {word:"scissors",
+      imagePrompt:"Two people doing a craft activity and sharing scissors, friendly creative setting, light blue medium pink dark purple palette, subtle hidden text “RBS ESL Tech Teach” engraved on handle",
+      def:"A cutting tool with two blades joined in the middle.",
+      guess:"I have two blades and a handle, and I cut paper and other materials. What am I?",
+      ccq:"Do you use this to cut things?"
+    },
+    {word:"sunglasses",
+      imagePrompt:"Friends outdoors wearing sunglasses and chatting in the sun, casual social scene, light blue medium pink dark purple palette, subtle hidden text “RBS ESL Tech Teach” microprinted on frame arm",
+      def:"Dark protective eyewear used to block strong sunlight.",
+      guess:"People wear me on sunny days to protect their eyes. What am I?",
+      ccq:"Do people use this mainly at night?"
+    },
+    {word:"a tablet",
+      imagePrompt:"Parent and child using a tablet together on a couch, relaxed home interaction, light blue medium pink dark purple palette, subtle hidden text “RBS ESL Tech Teach” as faint wallpaper detail on screen",
+      def:"A flat portable touchscreen computer.",
+      guess:"I’m bigger than a phone and smaller than a laptop, and you touch my screen. What am I?",
+      ccq:"Do you control this device mostly by touching the screen?"
+    },
+    {word:"a ticket",
+      imagePrompt:"Person showing a ticket to enter an event while talking to staff, entry gate scene, light blue medium pink dark purple palette, subtle hidden text “RBS ESL Tech Teach” microprinted on ticket edge",
+      def:"A printed or digital pass that allows entry or travel.",
+      guess:"You need me to enter a show or take a trip. What am I?",
+      ccq:"Do you use this to get access to a place or transport?"
+    },
+    {word:"a tissue",
+      imagePrompt:"Friend handing a tissue to someone with a runny nose, caring social moment, light blue medium pink dark purple palette, subtle hidden text “RBS ESL Tech Teach” on tissue box pattern",
+      def:"A soft disposable paper used to clean the nose or face.",
+      guess:"People use me when they sneeze or cry. What am I?",
+      ccq:"Do people throw this away after using it?"
+    },
+    {word:"an umbrella",
+      imagePrompt:"Two people sharing an umbrella while walking in the rain, friendly street scene, light blue medium pink dark purple palette, subtle hidden text “RBS ESL Tech Teach” printed tiny on inner fabric",
+      def:"A handheld object that protects people from rain.",
+      guess:"I open above your head when it rains. What am I?",
+      ccq:"Do you use this in sunny weather only?"
+    },
+    {word:"a wallet",
+      imagePrompt:"Person opening a wallet to show an ID to a clerk, everyday transaction scene, light blue medium pink dark purple palette, subtle hidden text “RBS ESL Tech Teach” embossed inside fold",
+      def:"A small folding holder for money and cards.",
+      guess:"I fold, fit in your pocket, and carry your cards and cash. What am I?",
+      ccq:"Do people keep cards and cash inside this?"
+    },
+    {word:"a watch",
+      imagePrompt:"Two coworkers checking the time on a wrist watch during a meeting break, social work scene, light blue medium pink dark purple palette, subtle hidden text “RBS ESL Tech Teach” micro-engraved on dial edge",
+      def:"A wearable device that shows the time on your wrist.",
+      guess:"I stay on your wrist and tell you the time. What am I?",
+      ccq:"Do you wear this on your wrist to see the time?"
+    }
+  ];
+
+  // -----------------------
+  // State + Persistence
+  // -----------------------
+  const LS_KEY = "eslStations_v1";
+  const LS_ITEMS = "eslStations_items_v1";
+  const stations = [
+    {id:"listen", title:"Station 1 — Listen (Definition)", icon:"🎧"},
+    {id:"guess",  title:"Station 2 — Guess (What am I?)", icon:"❓"},
+    {id:"visual", title:"Station 3 — Visual (Context)", icon:"🖼️"},
+    {id:"ccq",    title:"Station 4 — CCQ Check", icon:"✅"},
+  ];
+
+  let items = loadItems();
+  let state = loadState();
+
+  function loadItems(){
+    try{
+      const raw = localStorage.getItem(LS_ITEMS);
+      if(raw){
+        const parsed = JSON.parse(raw);
+        if(Array.isArray(parsed) && parsed.length >= 3) return parsed;
+      }
+    }catch(e){}
+    return structuredClone(defaultItems);
+  }
+
+  function saveItems(){
+    localStorage.setItem(LS_ITEMS, JSON.stringify(items));
+  }
+
+  function loadState(){
+    try{
+      const raw = localStorage.getItem(LS_KEY);
+      if(raw){
+        const parsed = JSON.parse(raw);
+        if(parsed && typeof parsed === "object") return parsed;
+      }
+    }catch(e){}
+    return {
+      stationIndex: 0,
+      currentIndex: 0,
+      correct: 0,
+      answered: {}, // key: stationId-index => {correct:true/false}
+      notes: {},    // index => text
+      timer: {running:false, totalSec: 420, leftSec: 420}
+    };
+  }
+
+  function saveState(){
+    localStorage.setItem(LS_KEY, JSON.stringify(state));
+  }
+
+  // -----------------------
+  // UI Refs
+  // -----------------------
+  const tabsEl = document.getElementById("tabs");
+  const stationBadge = document.getElementById("stationBadge");
+  const stationCard = document.getElementById("stationCard");
+  const itemList = document.getElementById("itemList");
+
+  const minutesEl = document.getElementById("minutes");
+  const startTimerBtn = document.getElementById("startTimerBtn");
+  const pauseTimerBtn = document.getElementById("pauseTimerBtn");
+  const nextStationBtn = document.getElementById("nextStationBtn");
+  const timeLeftEl = document.getElementById("timeLeft");
+  const timeBar = document.getElementById("timeBar");
+
+  const voiceSelect = document.getElementById("voiceSelect");
+  const testVoiceBtn = document.getElementById("testVoiceBtn");
+  const rateEl = document.getElementById("rate");
+  const langEl = document.getElementById("lang");
+
+  const kTotal = document.getElementById("kTotal");
+  const kCorrect = document.getElementById("kCorrect");
+  const kProgress = document.getElementById("kProgress");
+
+  const resetBtn = document.getElementById("resetBtn");
+
+  const importBox = document.getElementById("importBox");
+  const importBtn = document.getElementById("importBtn");
+  const exportBtn = document.getElementById("exportBtn");
+
+  const toastEl = document.getElementById("toast");
+
+  // -----------------------
+  // Tabs
+  // -----------------------
+  function renderTabs(){
+    tabsEl.innerHTML = "";
+    stations.forEach((s, idx) => {
+      const b = document.createElement("div");
+      b.className = "tab" + (idx === state.stationIndex ? " active" : "");
+      b.textContent = `${s.icon} ${s.title}`;
+      b.onclick = () => {
+        state.stationIndex = idx;
+        resetTimerForStation();
+        saveState();
+        renderAll();
+      };
+      tabsEl.appendChild(b);
+    });
+  }
+
+  // -----------------------
+  // Item list
+  // -----------------------
+  function renderItemList(){
+    itemList.innerHTML = "";
+    items.forEach((it, idx) => {
+      const btn = document.createElement("button");
+      btn.className = "secondary";
+      btn.style.width = "100%";
+      btn.style.justifyContent = "space-between";
+      btn.style.display = "flex";
+      btn.style.alignItems = "center";
+      btn.style.gap = "10px";
+      btn.textContent = `${idx+1}. ${it.word}`;
+      if(idx === state.currentIndex){
+        btn.style.borderColor = "rgba(43,11,63,.55)";
+        btn.style.outline = "2px solid rgba(43,11,63,.15)";
+      }
+
+      // small progress badge (any station answered for that item)
+      const answeredCount = stations.reduce((acc, s)=> acc + (state.answered[`${s.id}-${idx}`] ? 1 : 0), 0);
+      const mini = document.createElement("span");
+      mini.className = "badge";
+      mini.style.marginLeft = "auto";
+      mini.textContent = `${answeredCount}/4`;
+      btn.appendChild(mini);
+
+      btn.onclick = () => {
+        state.currentIndex = idx;
+        saveState();
+        renderAll();
+      };
+      itemList.appendChild(btn);
+    });
+  }
+
+  // -----------------------
+  // Station card content
+  // -----------------------
+  function renderStationCard(){
+    const station = stations[state.stationIndex];
+    const item = items[state.currentIndex];
+
+    stationBadge.textContent = station.title;
+
+    // helper
+    const say = (text) => speak(text);
+
+    // Build multiple choice options (3) including correct word
+    const options = buildOptions(state.currentIndex);
+    const optionCountLabel = `${options.length} option${options.length === 1 ? "" : "s"}`;
+
+    const key = `${station.id}-${state.currentIndex}`;
+    const prev = state.answered[key];
+
+    stationCard.innerHTML = `
+      <div class="row" style="justify-content:space-between;align-items:flex-start">
+        <div style="max-width:72%">
+          <div class="big">${station.icon} ${station.title}</div>
+          <div class="muted"><span class="mini">Item ${state.currentIndex+1}/${items.length}</span> — <strong id="itemWord" style="color:var(--dp)"></strong></div>
+        </div>
+        <div class="row">
+          <button class="secondary" id="prevItemBtn">← Item</button>
+          <button class="secondary" id="nextItemBtn">Item →</button>
+        </div>
+      </div>
+
+      <div class="sep"></div>
+
+      <div class="row">
+        <button id="playBtn">▶️ Listen</button>
+        <button class="secondary" id="replayBtn">🔁 Repeat</button>
+        <button class="ghost" id="revealBtn">👀 Reveal answer</button>
+      </div>
+
+      <div style="margin-top:12px" class="card">
+        <div class="badge">Content</div>
+        <div class="muted" id="promptText" style="margin-top:10px"></div>
+      </div>
+
+      <div style="margin-top:12px">
+        <div class="badge">Choose (${optionCountLabel})</div>
+        <div class="choices" id="choices"></div>
+      </div>
+
+      <div style="margin-top:12px" class="card">
+        <div class="badge">Your sentence / note (optional)</div>
+        <div class="muted" style="margin-top:8px">Write a sentence with “You use it to…” or “People use it when…”.</div>
+        <div style="margin-top:10px">
+          <textarea id="noteBox" placeholder="Write your sentence here..."></textarea>
+        </div>
+        <div class="row" style="margin-top:10px">
+          <button class="secondary" id="saveNoteBtn">Save note</button>
+          <span class="mini" id="noteSaved"></span>
+        </div>
+      </div>
+
+      <div class="sep"></div>
+      <div class="muted" id="resultLine"></div>
+    `;
+
+    const itemWordEl = document.getElementById("itemWord");
+    if(itemWordEl) itemWordEl.textContent = item.word;
+
+    // Set station-specific text + speech content
+    const promptTextEl = document.getElementById("promptText");
+    const playBtn = document.getElementById("playBtn");
+    const replayBtn = document.getElementById("replayBtn");
+    const revealBtn = document.getElementById("revealBtn");
+
+    let speechText = "";
+    if(station.id === "listen"){
+      promptTextEl.textContent = item.def;
+      speechText = item.def;
+    } else if(station.id === "guess"){
+      promptTextEl.textContent = item.guess;
+      speechText = item.guess;
+    } else if(station.id === "visual"){
+      promptTextEl.textContent = item.imagePrompt;
+      speechText = "Look at the scene description and write one functional sentence. " + item.imagePrompt;
+    } else if(station.id === "ccq"){
+      promptTextEl.textContent = item.ccq;
+      speechText = item.ccq;
+    }
+
+    playBtn.onclick = () => say(speechText);
+    replayBtn.onclick = () => say(speechText);
+    revealBtn.onclick = () => toast(`Answer: ${item.word}`);
+
+    // choices
+    const choicesEl = document.getElementById("choices");
+    choicesEl.innerHTML = "";
+    options.forEach(opt => {
+      const c = document.createElement("div");
+      c.className = "choice";
+      const label = document.createElement("div");
+      label.className = "label";
+      label.textContent = opt.word;
+
+      const hint = document.createElement("div");
+      hint.className = "hint";
+      hint.textContent = shortHintForStation(opt, station.id);
+
+      c.appendChild(label);
+      c.appendChild(hint);
+      c.onclick = () => onChoose(opt.word, item.word, station.id, c);
+      choicesEl.appendChild(c);
+    });
+
+    // prev/next item
+    document.getElementById("prevItemBtn").onclick = () => {
+      state.currentIndex = (state.currentIndex - 1 + items.length) % items.length;
+      saveState(); renderAll();
+    };
+    document.getElementById("nextItemBtn").onclick = () => {
+      state.currentIndex = (state.currentIndex + 1) % items.length;
+      saveState(); renderAll();
+    };
+
+    // note
+    const noteBox = document.getElementById("noteBox");
+    const noteSaved = document.getElementById("noteSaved");
+    noteBox.value = state.notes[state.currentIndex] || "";
+    document.getElementById("saveNoteBtn").onclick = () => {
+      state.notes[state.currentIndex] = noteBox.value.trim();
+      saveState();
+      noteSaved.textContent = "Saved ✅";
+      setTimeout(()=> noteSaved.textContent = "", 1200);
+    };
+
+    // result line
+    const resultLine = document.getElementById("resultLine");
+    if(prev){
+      resultLine.innerHTML = prev.correct
+        ? `<span style="color:var(--ok);font-weight:900">You already got this station right ✅</span>`
+        : `<span style="color:var(--bad);font-weight:900">You already tried and missed it. Try again 😄</span>`;
+    }else{
+      resultLine.textContent = "Make your choice above.";
+    }
+  }
+
+  function shortHintForStation(item, stationId){
+    if(stationId === "visual") return "Based on the scene.";
+    if(stationId === "ccq") return "Answer yes/no first.";
+    // keep hints minimal
+    return "Pick the best match.";
+  }
+
+  function buildOptions(correctIndex){
+    if(!items.length) return [];
+
+    const safeIndex = Math.min(Math.max(correctIndex, 0), items.length - 1);
+    const optionCount = Math.min(3, items.length);
+    const used = new Set([safeIndex]);
+    const picks = [items[safeIndex]];
+    while(picks.length < optionCount){
+      const r = Math.floor(Math.random() * items.length);
+      if(!used.has(r)){
+        used.add(r);
+        picks.push(items[r]);
+      }
+    }
+    // shuffle
+    for(let i=picks.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [picks[i], picks[j]] = [picks[j], picks[i]];
+    }
+    return picks;
+  }
+
+  function onChoose(chosen, correct, stationId, el){
+    const key = `${stationId}-${state.currentIndex}`;
+    const isCorrect = chosen === correct;
+    const prev = state.answered[key];
+    const wasCorrect = prev ? Boolean(prev.correct) : null;
+
+    // mark UI
+    const parent = el.parentElement;
+    [...parent.children].forEach(ch => ch.classList.remove("correct","wrong"));
+    el.classList.add(isCorrect ? "correct" : "wrong");
+
+    // save
+    if(!prev){
+      state.answered[key] = {correct:isCorrect, ts: Date.now()};
+      if(isCorrect) state.correct += 1;
+    } else {
+      state.answered[key].correct = isCorrect;
+      state.answered[key].ts = Date.now();
+      if(wasCorrect !== isCorrect){
+        state.correct += isCorrect ? 1 : -1;
+      }
+    }
+    state.correct = Math.max(0, state.correct);
+    saveState();
+
+    toast(isCorrect ? "Correct ✅" : "Wrong ❌ (no panic)");
+    renderKPIs();
+    renderItemList();
+  }
+
+  // -----------------------
+  // Timer
+  // -----------------------
+  let timerHandle = null;
+
+  function resetTimerForStation(){
+    const mins = clamp(parseInt(minutesEl.value || "7",10), 1, 20);
+    state.timer.totalSec = mins * 60;
+    state.timer.leftSec = mins * 60;
+    state.timer.running = false;
+    saveState();
+    stopTimer();
+    renderTimer();
+  }
+
+  function startTimer(){
+    if(state.timer.running) return;
+    state.timer.running = true;
+    saveState();
+    if(timerHandle) clearInterval(timerHandle);
+    timerHandle = setInterval(() => {
+      if(!state.timer.running) return;
+      state.timer.leftSec -= 1;
+      if(state.timer.leftSec <= 0){
+        state.timer.leftSec = 0;
+        state.timer.running = false;
+        saveState();
+        renderTimer();
+        toast("Time's up! Next station 👇");
+        // auto-next station
+        goNextStation();
+        return;
+      }
+      saveState();
+      renderTimer();
+    }, 1000);
+  }
+
+  function stopTimer(){
+    state.timer.running = false;
+    saveState();
+    if(timerHandle) clearInterval(timerHandle);
+    timerHandle = null;
+  }
+
+  function renderTimer(){
+    const left = state.timer.leftSec;
+    const total = state.timer.totalSec || 1;
+    timeLeftEl.textContent = fmtTime(left);
+    const pct = 100 - Math.round((left / total) * 100);
+    timeBar.style.width = pct + "%";
+  }
+
+  function goNextStation(){
+    stopTimer();
+    state.stationIndex = (state.stationIndex + 1) % stations.length;
+    resetTimerForStation();
+    saveState();
+    renderAll();
+  }
+
+  // -----------------------
+  // TTS (Web Speech API)
+  // -----------------------
+  let voices = [];
+  function populateVoices(){
+    if(!("speechSynthesis" in window)){
+      voices = [];
+      voiceSelect.innerHTML = "";
+      const opt = document.createElement("option");
+      opt.value = "";
+      opt.textContent = "TTS unavailable in this browser";
+      voiceSelect.appendChild(opt);
+      voiceSelect.disabled = true;
+      testVoiceBtn.disabled = true;
+      langEl.disabled = true;
+      rateEl.disabled = true;
+      return;
+    }
+
+    voiceSelect.disabled = false;
+    testVoiceBtn.disabled = false;
+    langEl.disabled = false;
+    rateEl.disabled = false;
+
+    const previous = voiceSelect.value;
+    voices = speechSynthesis.getVoices() || [];
+    voiceSelect.innerHTML = "";
+    const lang = langEl.value;
+    const filtered = voices.filter(v => (v.lang || "").toLowerCase().startsWith(lang.split("-")[0].toLowerCase()));
+    const list = filtered.length ? filtered : voices;
+
+    list.forEach((v, idx) => {
+      const opt = document.createElement("option");
+      opt.value = v.name;
+      opt.textContent = `${v.name} (${v.lang})`;
+      voiceSelect.appendChild(opt);
+    });
+
+    if(voiceSelect.options.length){
+      const previousIndex = list.findIndex(v => v.name === previous);
+      voiceSelect.selectedIndex = previousIndex >= 0 ? previousIndex : 0;
+    }
+  }
+
+  function speak(text){
+    if(!("speechSynthesis" in window)){
+      toast("Your browser does not support TTS 😢");
+      return;
+    }
+    try{ speechSynthesis.cancel(); }catch(e){}
+    const u = new SpeechSynthesisUtterance(text);
+    const chosenName = voiceSelect.value;
+    const v = voices.find(v => v.name === chosenName);
+    if(v) u.voice = v;
+    u.lang = langEl.value;
+    u.rate = clamp(parseFloat(rateEl.value || "1"), 0.7, 1.4);
+    speechSynthesis.speak(u);
+  }
+
+  // -----------------------
+  // KPIs
+  // -----------------------
+  function renderKPIs(){
+    const correctCount = Object.values(state.answered || {})
+      .filter(x => x && x.correct)
+      .length;
+    if(state.correct !== correctCount){
+      state.correct = correctCount;
+      saveState();
+    }
+
+    kTotal.textContent = items.length;
+    kCorrect.textContent = state.correct;
+
+    const totalQuestions = Math.max(1, items.length * stations.length);
+    const answeredCount = Object.keys(state.answered).length;
+    const pct = Math.round((answeredCount / totalQuestions) * 100);
+    kProgress.textContent = `${pct}%`;
+  }
+
+  // -----------------------
+  // Import / Export
+  // -----------------------
+  importBtn.onclick = () => {
+    const raw = importBox.value.trim();
+    if(!raw) return toast("Paste JSON first.");
+    try{
+      const parsed = JSON.parse(raw);
+      if(!Array.isArray(parsed) || parsed.length < 3){
+        return toast("Invalid JSON: it must be an array with at least 3 items.");
+      }
+      // minimal validation
+      const ok = parsed.every(x => x && x.word && x.def && x.guess && x.ccq && x.imagePrompt);
+      if(!ok) return toast("Missing fields: word, def, guess, ccq, imagePrompt.");
+      items = parsed;
+      saveItems();
+      // reset state because dataset changed
+      state.currentIndex = 0;
+      state.correct = 0;
+      state.answered = {};
+      state.notes = {};
+      resetTimerForStation();
+      saveState();
+      toast("Imported ✅");
+      renderAll();
+    }catch(e){
+      toast("Malformed JSON.");
+    }
+  };
+
+  exportBtn.onclick = async () => {
+    const txt = JSON.stringify(items, null, 2);
+    try{
+      await navigator.clipboard.writeText(txt);
+      toast("JSON copied ✅");
+    }catch(e){
+      // fallback
+      importBox.value = txt;
+      toast("Copied to the text box (clipboard blocked).");
+    }
+  };
+
+  // -----------------------
+  // Reset
+  // -----------------------
+  resetBtn.onclick = () => {
+    if(!confirm("Reset progress?")) return;
+    localStorage.removeItem(LS_KEY);
+    state = loadState();
+    resetTimerForStation();
+    toast("Progress reset.");
+    renderAll();
+  };
+
+  // -----------------------
+  // Wire controls
+  // -----------------------
+  startTimerBtn.onclick = () => startTimer();
+  pauseTimerBtn.onclick = () => stopTimer();
+  nextStationBtn.onclick = () => goNextStation();
+
+  minutesEl.onchange = () => resetTimerForStation();
+  langEl.onchange = () => { populateVoices(); toast("Voices updated."); };
+  testVoiceBtn.onclick = () => speak("Hello! This is the voice test.");
+
+  // -----------------------
+  // Toast
+  // -----------------------
+  function toast(msg){
+    toastEl.textContent = msg;
+    toastEl.style.display = "block";
+    clearTimeout(toastEl._t);
+    toastEl._t = setTimeout(()=> toastEl.style.display="none", 1400);
+  }
+
+  // -----------------------
+  // Helpers
+  // -----------------------
+  function fmtTime(sec){
+    const m = Math.floor(sec/60);
+    const s = sec%60;
+    return String(m).padStart(2,"0")+":"+String(s).padStart(2,"0");
+  }
+  function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
+
+  // -----------------------
+  // Render all
+  // -----------------------
+  function renderAll(){
+    renderTabs();
+    renderItemList();
+    renderStationCard();
+    renderTimer();
+    renderKPIs();
+  }
+
+  // -----------------------
+  // Init
+  // -----------------------
+  function init(){
+    // voices might load async
+    populateVoices();
+    if(typeof speechSynthesis !== "undefined"){
+      speechSynthesis.onvoiceschanged = populateVoices;
+    }
+    // ensure timer matches minutes field if empty
+    if(!state.timer || !state.timer.totalSec){
+      resetTimerForStation();
+    } else {
+      // sync UI minutes
+      minutesEl.value = Math.max(1, Math.round((state.timer.totalSec || 420)/60));
+      renderTimer();
+    }
+    renderAll();
+  }
+
+  init();
+
+})();
+</script>
+</body>
+</html>
