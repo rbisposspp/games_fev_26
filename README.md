@@ -1,31 +1,38 @@
 # games_fev_26
 
-Projeto web estático com dois recursos para aulas de ESL:
+Portuguese + English README for the ESL web tools.
+
+## Visão geral (PT)
 
 - `game.html`: jogo de associação de verb phrases com timer, dicas e progresso.
-- `stations.html`: rotação de 4 estações com TTS, timer, notas e import/export de conteúdo.
+- `stations.html`: rotação de 4 estações (Listen, Guess, Visual, CCQ) com TTS, timer, notas e import/export.
 
-## Demo local
+## Overview (EN)
 
-Como não há build pipeline, basta servir os arquivos estáticos:
+- `game.html`: verb phrase matching game with timer, hints, and progress.
+- `stations.html`: 4-station rotation (Listen, Guess, Visual, CCQ) with TTS, per-station timer, notes, and JSON import/export.
+
+## Demo local / Local demo
+
+Sem build pipeline / No build step needed:
 
 ```bash
 python -m http.server 8000
 ```
 
-Abra no navegador:
+Acesse / Open:
 
 - `http://localhost:8000/game.html`
 - `http://localhost:8000/stations.html`
 
-No Windows, para abrir rápido sem servidor:
+Windows (abrir direto) / Windows (quick open):
 
 ```bash
 start game.html
 start stations.html
 ```
 
-## Estrutura do projeto
+## Estrutura / Structure
 
 ```text
 .
@@ -34,26 +41,21 @@ start stations.html
 └── stations.html
 ```
 
-## Funcionalidades
+## Funcionalidades / Features
 
 ### game.html
 
-- Jogo de matching com feedback de acerto/erro.
-- Atalhos de teclado (`R`, `S`, `H`).
-- Timer de sessão com melhor tempo persistido em `localStorage`.
-- Embaralhar/reiniciar sem build externo.
+- PT: Matching com feedback, atalhos (`R`, `S`, `H`), timer com melhor tempo em `localStorage`.
+- EN: Matching with feedback, shortcuts (`R`, `S`, `H`), session timer with best time in `localStorage`.
 
 ### stations.html
 
-- 4 estações: Listen, Guess, Visual, CCQ.
-- Timer por estação com avanço automático.
-- TTS via Web Speech API (com fallback quando indisponível).
-- Notas por item, persistência de progresso e KPIs.
-- Importação/exportação JSON com validação básica.
+- PT: 4 estações, timer por estação com avanço automático, TTS (Web Speech API), notas e KPIs, import/export JSON validado.
+- EN: 4 stations, per-station timer with auto-advance, TTS (Web Speech API), notes and KPIs, validated JSON import/export.
 
-## Persistência local (reset)
+## Persistência local / Local reset
 
-No console do navegador:
+Console do navegador / Browser console:
 
 ```js
 // game.html
@@ -64,24 +66,25 @@ localStorage.removeItem("eslStations_v1");
 localStorage.removeItem("eslStations_items_v1");
 ```
 
-## Tecnologias
+## Tecnologias / Stack
 
 - HTML5
 - CSS3
 - JavaScript (vanilla)
-- Web Speech API (TTS, quando suportado pelo navegador)
+- Web Speech API (quando suportado / when supported)
 
-## Contribuição
+## Contribuição / Contributing
 
-1. Faça um fork.
-2. Crie uma branch de feature.
-3. Commit suas mudanças.
-4. Abra um Pull Request com:
-   - resumo da mudança
-   - impacto para usuário
-   - passos de teste manual
-   - screenshots/GIFs para alterações visuais
+1. Fork.
+2. Branch de feature / feature branch.
+3. Commit.
+4. Pull Request com / with:
+   - resumo / summary
+   - impacto para usuário / user impact
+   - passos de teste manual / manual test steps
+   - screenshots/GIFs para UI
 
 ## Status
 
-Projeto funcional para uso local/offline em sala de aula, sem dependências externas obrigatórias.
+PT: Funcional offline/local, sem dependências externas obrigatórias.  
+EN: Works offline/local; no external dependencies required.
